@@ -10,8 +10,15 @@ module Todo
 			end
 
 			def create_task_validations(args)
-				opts = stock_validation(args.size, 2, "todo create_task task_name description")
+				opts = stock_validation(args.size, [2,3], "todo create_task task_name description priority (optional)")
 				opts[:options] = {task: args[0], description: args[1]}
+        opts[:options].merge!(priority: args[2]) if args[2]
+
+        # Validate Priority Value if present
+        if args[2] && !args[2].match(/\d{1,}/)
+          opts[:valid] = false
+          opts[:message] = "Priority must be an Integer."
+        end
         opts
 		  end
 
@@ -23,7 +30,10 @@ module Todo
 
 		  def stock_validation(size, expected_size, cmd)
 		  	opts = {}
-				opts[:valid] = expected_size == size ? true : false
+        expected_size.is_a?(Array) ?
+          (opts[:valid] = size.between?(expected_size[0], expected_size[1]) ? true : false) :
+          (opts[:valid] = expected_size == size ? true : false)
+
 				opts[:message] = "Invalid Usage... Example: `#{cmd}`" unless opts[:valid]
 				opts 
 		  end
