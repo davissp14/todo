@@ -9,7 +9,7 @@ List active tasks.
 
     todo tasks 
     => Task: Example Task - Priority: 10
-       **Brief Description Here**
+       ** Brief Description Here **
 
 Create new task.
 
@@ -18,17 +18,17 @@ Create new task.
        ** Need this fixed by Friday... **
        
        Task: Example Task - Priority: 10
-       **Brief Description Here**
+       ** Brief Description Here **
 
 Delete task.
 
       todo delete_task "Fix Dns Issue"
       =>  Task: Example Task - Priority: 10
-          **Brief Description Here**
+          ** Brief Description Here **
 
 Set task priority.
 
       todo set_priority "Example Task" 4
       =>  Task: Example Task - Priority: 4
-          **Brief Description Here**
+          ** Brief Description Here **
 
