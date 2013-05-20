@@ -5,36 +5,19 @@ module Todo
 			  stock_validation(args.size, 0, 'todo help')
 			end
 
-			def lists_validations(args)
-				stock_validation(args.size, 0, 'todo lists')
-			end 
-
-			def create_list_validations(args)
-			  opts = stock_validation(args.size, 3, 'todo create_list list_name task_name description')
-	      opts[:options] = {name: args[0], task: args[1], description: args[2]}
-	      opts 
-			end
-
-			def delete_list_validations(args)
-				opts = stock_validation(args.size, 1, "todo delete_list list_name")
-				opts[:options] = {name: args[0]}
-				opts 
-			end
-
 			def tasks_validations(args)
-				opts = stock_validation(args.size, 1, "todo tasks list_name")
-				opts[:options] = {name: args[0]}
-				opts
+				stock_validation(args.size, 0, "todo tasks")
 			end
 
 			def create_task_validations(args)
-				opts = stock_validation(args.size, 3, "todo create_task list_name task_name description")
-				opts[:options] = {name: args[0], task: args[1], description: args[2]}
+				opts = stock_validation(args.size, 2, "todo create_task task_name description")
+				opts[:options] = {task: args[0], description: args[1]}
+        opts
 		  end
 
 		  def delete_task_validations(args)
-		  	opts = stock_validation(args.size, 2, "todo delete_task list_name task_name")
-		  	opts[:options] = {name: args[0], task: args[1]}
+		  	opts = stock_validation(args.size, 1, "todo delete_task task_name")
+		  	opts[:options] = {task: args[0]}
 		  	opts
 		  end 
 
