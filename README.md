@@ -13,16 +13,16 @@ List active tasks.
 
 Create new task.
 
-    todo create_task "Clean clothes" "Need clothes cleaned by friday..." 3
-    => Task: Clean clothes - Priority: 3 
-       ** Need clothes cleaned by friday..."
+    todo create_task "Fix Dns Issue" "Need this fixed by Friday..." 3
+    => Task: Fix Dns Issue - Priority: 3 
+       ** Need this fixed by Friday... **
        
        Task: Example Task - Priority: 10
        **Brief Description Here**
 
 Delete task.
 
-      todo delete_task "Clean clothes"
+      todo delete_task "Fix Dns Issue"
       =>  Task: Example Task - Priority: 10
           **Brief Description Here**
 
