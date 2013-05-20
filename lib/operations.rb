@@ -20,7 +20,7 @@ module Todo
     end
 
     def delete_task(opts)
-      @redis.hdel(TODO_NAMESPACE, opts[:task])
+      @redis.hdel(namespace, opts[:task])
       tasks
     end
 
