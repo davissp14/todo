@@ -4,7 +4,7 @@ module Todo
   	def initialize; establish_connection; end 
 
   	def self.available_commands
-      [:tasks, :create_task, :delete_task, :help]
+      [:tasks, :create_task, :delete_task, :set_priority, :help]
   	end
 
     def tasks
@@ -29,6 +29,11 @@ module Todo
     def delete_task(opts)
       @redis.hdel(namespace, opts[:task])
       @redis.zrem(priority_namespace, opts[:task])
+      tasks
+    end
+
+    def set_priority(opts)
+      @redis.zadd(priority_namespace, opts[:priority], opts[:task])
       tasks
     end
 

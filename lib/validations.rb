@@ -26,6 +26,12 @@ module Todo
 		  	opts = stock_validation(args.size, 1, "todo delete_task task_name")
 		  	opts[:options] = {task: args[0]}
 		  	opts
+		  end
+
+		  def set_priority_validations(args)
+		  	opts = stock_validation(args.size, 2, "todo set_priority task_name priority")
+		  	opts[:options] = {task: args[0], priority: args[1]}
+		  	opts
 		  end 
 
 		  def stock_validation(size, expected_size, cmd)
