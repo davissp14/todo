@@ -11,7 +11,11 @@ module Todo
       keys = @redis.hkeys(namespace)
       descriptions = @redis.hvals(namespace)
       tasks = keys.zip(descriptions)
-      yellow_output(tasks.empty? ? "No active tasks present!" : tasks)
+      tasks.each do |task, description|
+        teal_output("Task: #{task}")
+        yellow_output("**#{description}** \n")
+      end
+      yellow_output("No active tasks present!") if tasks.empty?
     end
 
     def create_task(opts)
@@ -25,7 +29,7 @@ module Todo
     end
 
     def help
-    	green_output(Operations.available_commands.join(', '))
+    	green_output( Operations.available_commands.join(', ') )
     end
 
     private
