@@ -29,7 +29,7 @@ module Todo
 		  end
 
 		  def method_missing(*args)
-		  	red_output("No Validation Present!")
+		  	colorize(:red){"No Validation Present!"}
 		  end
 		end 
 	end

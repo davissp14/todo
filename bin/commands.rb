@@ -15,10 +15,10 @@ module Todo
   	  		Operations.new.send(args[0], response[:options]) :
   	  		Operations.new.send(args[0])
   	  else
-  			red_output(response[:message])
+  			colorize(:red){response[:message]}
       end
   	  rescue UnknownCommand
-  	  	red_output("Run: `todo help` for a list of available options!")
+  	  	colorize(:red){"Run: `todo help` for a list of available options!"}
   	end
   end
 end
