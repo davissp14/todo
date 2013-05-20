@@ -1,6 +1,9 @@
 
 require_relative '../todo'
+
 module Todo
+  class UnknownCommand < StandardError; end
+
   class Commands
   	extend Todo::Colors 
   	def self.parse(args)
