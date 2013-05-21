@@ -14,8 +14,8 @@ module Todo
 
       tasks.each do |task, description|
         priority = @redis.zscore(priority_namespace, task) || "N/A"
-        colorize(:teal){"Task: #{task} - Priority: #{priority}"}
-        colorize(:yellow){"**#{description.join('')}** \n"}
+        colorize(:yellow){"Task: #{task} - Priority: #{priority}"}
+        colorize(:teal){"**#{description.join('')}** \n"}
       end
       colorize(:yellow){"No active tasks present!"} if tasks.empty?
     end
