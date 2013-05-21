@@ -7,19 +7,31 @@ module Todo
   class Commands
   	extend Todo::Colors 
   	def self.parse(args)
-      raise UnknownCommand unless args[0] && Operations.available_commands.include?(args[0].to_sym)  
-      response = Validations.send("#{args[0]}_validations", args[1..-1])  
+      command = (args[0] && args[0].length < 3) ? convert_alias(args[0]) : args[0]
+
+      raise UnknownCommand unless command && Operations.available_commands.include?(command.to_sym)
+      response = Validations.send("#{command}_validations", args[1..-1])
 
       if response[:valid]
       	response.has_key?(:options) ?
-  	  		Operations.new.send(args[0], response[:options]) :
-  	  		Operations.new.send(args[0])
+  	  		Operations.new.send(command, response[:options]) :
+  	  		Operations.new.send(command)
   	  else
   			colorize(:red){response[:message]}
       end
   	  rescue UnknownCommand
   	  	colorize(:red){"Run: `todo help` for a list of available options!"}
-  	end
+    end
+
+    def self.convert_alias(cmd)
+      alias_map = {
+        h: "help",
+        ct: "create_task",
+        dt: "delete_task",
+        t: "tasks"
+      }
+      alias_map[cmd.to_sym]
+    end
   end
 end
 

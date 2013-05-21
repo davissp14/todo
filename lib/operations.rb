@@ -36,6 +36,7 @@ module Todo
       @redis.zadd(priority_namespace, opts[:priority], opts[:task])
       tasks
     end
+    
 
     def help
     	colorize(:green){Operations.available_commands.join(', ')}
