@@ -32,7 +32,8 @@ module Todo
         t: "tasks",
         l: "labels",
         cl: "create_label",
-        dl: "delete_label"
+        dl: "delete_label",
+        al: "assign_label"
       }
       alias_map[cmd.to_sym]
     end

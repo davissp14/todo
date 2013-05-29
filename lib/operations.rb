@@ -4,17 +4,21 @@ module Todo
   	def initialize; establish_connection; end 
 
   	def self.available_commands
-      [:tasks, :create_task, :delete_task, :labels, :create_label, :delete_label, :set_priority, :help]
+      [:tasks, :create_task, :delete_task, :labels, :create_label, :delete_label, :assign_label, :set_priority, :help]
   	end
 
     def tasks
       priorities = @redis.zrange(priority_namespace, 0, -1)
+      labels = @redis.hgetall(labeled_tasks_namespace)
+      task_labels = priorities.map{|p| labels[p] ? labels[p] : nil  }
       vals = priorities.map{|priority| @redis.hmget(namespace, priority) }
-      tasks = priorities.zip(vals)
+      tasks = priorities.zip vals, task_labels
 
-      tasks.each do |task, description|
+      tasks.each do |task, description, label|
         priority = @redis.zscore(priority_namespace, task) || "N/A"
-        colorize(:yellow){"Task: #{task} - Priority: #{priority}"}
+        output = "Task: #{task} - Priority: #{priority}"
+        output << " <=~ \033[32m ( #{label.capitalize} ) \033[0m" if label
+        colorize(:yellow){output}
         colorize(:teal){"**#{description.join('')}** \n"}
       end
       colorize(:yellow){"No active tasks present!"} if tasks.empty?
@@ -28,6 +32,7 @@ module Todo
 
     def delete_task(opts)
       @redis.hdel(namespace, opts[:task])
+      @redis.hdel(labeled_tasks_namespace, opts[:task])
       @redis.zrem(priority_namespace, opts[:task])
       tasks
     end
@@ -49,6 +54,14 @@ module Todo
       labels
     end
 
+    def assign_label(opts)
+      @redis.hmset(labeled_tasks_namespace, opts[:task], opts[:label])
+      tasks
+    end
+
+    def remove_label(opts)
+      @redis.hdel(labeled_tasks_namespace, opts[:task])
+    end
 
     def set_priority(opts)
       @redis.zadd(priority_namespace, opts[:priority], opts[:task])
@@ -72,6 +85,10 @@ module Todo
 
     def label_namespace
       "#{namespace}:label"
+    end
+
+    def labeled_tasks_namespace
+      "#{namespace}:labeled_tasks"
     end
 
     def establish_connection

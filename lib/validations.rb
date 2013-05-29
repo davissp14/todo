@@ -21,6 +21,12 @@ module Todo
         opts
       end
 
+      def assign_label_validations(args)
+        opts = stock_validation(args.size, 2, "todo assign_label label_name task_name")
+        opts[:options] = {label: args[0], task: args[1]}
+        opts
+      end
+
 			def tasks_validations(args)
 				stock_validation(args.size, 0, "todo tasks")
 			end
