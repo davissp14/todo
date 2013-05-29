@@ -5,6 +5,22 @@ module Todo
 			  stock_validation(args.size, 0, 'todo help')
 			end
 
+      def labels_validations(args)
+        stock_validation(args.size, 0, "todo labels")
+      end
+
+      def create_label_validations(args)
+        opts = stock_validation(args.size, 1, "todo create_label label_name")
+        opts[:options] = {label: args[0]}
+        opts
+      end
+
+      def delete_label_validations(args)
+        opts = stock_validation(args.size, 1, "todo delete_label label_name")
+        opts[:options] = {label: args[0]}
+        opts
+      end
+
 			def tasks_validations(args)
 				stock_validation(args.size, 0, "todo tasks")
 			end

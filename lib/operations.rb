@@ -4,7 +4,7 @@ module Todo
   	def initialize; establish_connection; end 
 
   	def self.available_commands
-      [:tasks, :create_task, :delete_task, :set_priority, :help]
+      [:tasks, :create_task, :delete_task, :labels, :create_label, :delete_label, :set_priority, :help]
   	end
 
     def tasks
@@ -32,6 +32,24 @@ module Todo
       tasks
     end
 
+    def labels
+      labels = @redis.smembers(label_namespace)
+      labels.empty? ?
+        colorize(:red){"No labels present..."} :
+        colorize(:green){labels.join(', ')}
+    end
+
+    def create_label(opts)
+      @redis.sadd(label_namespace, opts[:label])
+      labels
+    end
+
+    def delete_label(opts)
+      @redis.srem(label_namespace, opts[:label])
+      labels
+    end
+
+
     def set_priority(opts)
       @redis.zadd(priority_namespace, opts[:priority], opts[:task])
       tasks
@@ -50,6 +68,10 @@ module Todo
 
     def priority_namespace
       "#{namespace}:priority"
+    end
+
+    def label_namespace
+      "#{namespace}:label"
     end
 
     def establish_connection
