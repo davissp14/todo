@@ -29,7 +29,10 @@ module Todo
         ct: "create_task",
         dt: "delete_task",
         sp: "set_priority",
-        t: "tasks"
+        t: "tasks",
+        l: "labels",
+        cl: "create_label",
+        dl: "delete_label"
       }
       alias_map[cmd.to_sym]
     end
