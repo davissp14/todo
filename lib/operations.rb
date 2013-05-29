@@ -8,6 +8,7 @@ module Todo
   	end
 
     def tasks
+      puts `clear`
       priorities = @redis.zrange(priority_namespace, 0, -1)
       labels = @redis.hgetall(labeled_tasks_namespace)
       task_labels = priorities.map{|p| labels[p] ? labels[p] : nil  }
